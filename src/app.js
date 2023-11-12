@@ -47,6 +47,6 @@ app.use('/oldarya', userRoutes);
 app.use('/oldarya', notesRoutes);
 app.use('/oldarya', itemRoutes);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3002, () => {
     console.log(`Server running on port ${process.env.PORT}`)
 })
