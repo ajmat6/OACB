@@ -28,15 +28,6 @@ app.use(
         "origin": "*"
     })
 )
-// for deploy: this will run frontend application also on the same port as backend is running:
-const dirname = path.dirname("")
-const buildpath = path.join(dirname, '../../oldaryaconnect/build');
-app.use(express.static(buildpath));
-
-app.get(/^\/(?!api).*/, (req, res) => {
-    res.sendFile('index.html', {root: buildpath});
-});
-
 
 
 app.use(express.json());
