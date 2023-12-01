@@ -151,6 +151,21 @@ router.post('/signin', validateSigninRequest, isRequestValidated, async (req,res
     }
 })
 
+router.post('/user/check-username', async (req, res) => {
+    try
+    {
+        console.log(req.body)
+        const alreadyUsername = await User.findOne({username: req.body.username});
+        if(alreadyUsername) return res.status(200).json({message: "Failed!"});
+        else return res.status(200).json({message: "Success!"})
+
+    }
+    catch (error) {
+        console.log(error.message); //method to print the error (error.message)
+        res.status(500).send("Some Internal Server Error Occured! Please try again after some time");
+    }
+})
+
 router.post('/user/verify-email', async (req, res) => {
     try
     {

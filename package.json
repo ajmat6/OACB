@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Old arya backend",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./src/app.js",
-    "main": "app.js"
+    "start": "node ./src/index.js",
+    "main": "index.js"
   },
   "author": "ajmat",
   "license": "ISC",
