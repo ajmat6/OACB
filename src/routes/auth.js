@@ -178,10 +178,10 @@ router.post('/user/verify-email', async (req, res) => {
             if(user.verified) return res.status(401).json({message: "Account already verified!"})
 
             const verifyToken = await VerificationToken.findOne({user: req.body.userId})
-            if(!verifyToken) res.status(401).json({message: "Some error occured, Please try again!"})
+            if(!verifyToken) return  res.status(401).json({message: "Some error occured, Please try again!"})
 
             const isMatched = await verifyToken.compareToken(req.body.otp); 
-            if(!isMatched) res.status(401).json({message: "Please Enter Valid OTP"});
+            if(!isMatched) return  res.status(401).json({message: "Please Enter Valid OTP"});
 
             // verifying the user:
             user.verified = true;
