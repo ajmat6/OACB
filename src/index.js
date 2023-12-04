@@ -4,6 +4,8 @@ const app = express();
 const env = require('dotenv');
 const cors = require('cors');
 const path = require('path')
+const cron = require('node-cron')
+const User = require('./models/User')
 
 env.config();
 
@@ -41,3 +43,29 @@ app.use('/oldarya', itemRoutes);
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`)
 })
+
+// Cron job for deleting users who do not verify them in one hour automatically:
+// npm install node-cron
+cron.schedule('0 * * * *', async () => {
+    try {
+      // Calculate the timestamp one hour ago
+      const oneHourAgo = new Date();
+      oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+  
+      // Find unverified users created more than one hour ago
+      const unverifiedUsers = await User.find({
+        verified: false,
+        createdAt: { $lt: oneHourAgo }
+      });
+  
+      // Delete the unverified users
+      await User.deleteMany({
+        verified: false,
+        createdAt: { $lt: oneHourAgo }
+      });
+  
+      console.log(`Deleted ${unverifiedUsers.length} unverified users older than one hour.`);
+    } catch (error) {
+      console.error('Error deleting unverified users:', error);
+    }
+  });
