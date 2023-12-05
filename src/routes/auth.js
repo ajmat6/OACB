@@ -177,17 +177,18 @@ router.post('/user/verify-email', async (req, res) => {
             if(!user) return res.status(401).json({message: "No user found!, Please try again"})
             if(user.verified) return res.status(401).json({message: "Account already verified!"})
 
-            const verifyToken = await VerificationToken.findOne({user: req.body.userId})
+            const verifyToken = await VerificationToken.find({user: req.body.userId})
             if(!verifyToken) return  res.status(401).json({message: "Some error occured, Please try again!"})
+            console.log(verifyToken)
 
-            const isMatched = await verifyToken.compareToken(req.body.otp); 
+            const isMatched = await verifyToken[0].compareToken(req.body.otp); 
             if(!isMatched) return  res.status(401).json({message: "Please Enter Valid OTP"});
 
             // verifying the user:
             user.verified = true;
 
             // delete token from database if user is verified and save user:
-            await VerificationToken.findOneAndDelete(verifyToken._id);
+            await VerificationToken.findOneAndDelete(verifyToken[0]._id);
             await user.save();
 
             const data = {
