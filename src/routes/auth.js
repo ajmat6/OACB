@@ -250,7 +250,7 @@ router.post('/user/forgot-password', async (req, res) => {
             to: email,
             subject: "Reset password request for your oldaryaconnect account!",
             // html: resetPasswordTemplate(`${process.env.FRONTEND_URL}/forgot-password/token=${token}/id=${user._id}`) // sending url for reset password:
-            html: resetPasswordTemplate(`https://inspiring-praline-021f79.netlify.app/forgot-password/token=${token}/id=${user._id}`) // sending url for reset password:
+            html: resetPasswordTemplate(`https://oldaryaconnect.in/forgot-password/token=${token}/id=${user._id}`) // sending url for reset password:
         })
 
         // if email is sent to the requested email, showing message to the user of it:
