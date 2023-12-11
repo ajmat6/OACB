@@ -125,7 +125,8 @@ router.post('/signin', validateSigninRequest, isRequestValidated, async (req,res
             }
         }
 
-        const token = jwt.sign(data, process.env.JWT_SECRET, {expiresIn: '24hr'});
+        // const token = jwt.sign(data, process.env.JWT_SECRET, {expiresIn: '24hr'});
+        const token = jwt.sign(data, process.env.JWT_SECRET);
 
         // sending response to the user: Here fullName will be set by virtual
         const { name, username, email, role, _id} = user;
@@ -307,7 +308,7 @@ router.post('/user/reset-password', async (req, res) => {
 router.post('/signout', async (req ,res) => {
     try
     {
-       res.clearCookie('token') // clearing cookie named token
+       res.clearCookie('otoken') // clearing cookie named token
        res.status(200).json({
         message: "Sign Out Successfully"
        })
@@ -317,23 +318,6 @@ router.post('/signout', async (req ,res) => {
     {
         console.log(error.message);
         res.status(500).send("Some Internal Server Error Occured! Please try again after some times");
-    }
-})
-
-
-// API end point for signin: POST Request -> to login
-router.post('/profile', fetchuser, async (req, res) => {
-    try
-    {
-        // finding user by its ID:
-        const userId = req.user.id;
-        const user = await User.findById(userId);
-        res.status(200).json({user});
-    } 
-    catch (error)
-    {
-        console.log(error.message);
-        res.status(500).send("Some Internal Server Error Occured! Please try again after some times");    
     }
 })
 
@@ -391,14 +375,9 @@ router.post('/user/update', fetchuser, userMiddleware, upload.single('profilePic
     }
 })
 
-router.post('/google/login', async (req, res) => {
-    const {idToken} = req.body;
-    console.log(idToken);
-})
 
 
 // Authentication for the admin:
-
 
 // API end point for signup: POST Request -> to create an account:
 router.post('/admin/signup', validateSignupRequest, isRequestValidated, async (req,res) => {
