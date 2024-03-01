@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer') // nodemailer used for sending emails
 
 exports.generateOTP = () => {
     let otp = '';
@@ -607,3 +607,4 @@ exports.resetPasswordTemplate = URL => {
 </html>
     `
 }
+

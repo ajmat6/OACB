@@ -7,7 +7,8 @@ const path = require('path')
 const cron = require('node-cron')
 const User = require('./models/User')
 
-env.config();
+env.config({ path: path.resolve(__dirname, '.env') });
+
 
 // Routes import:
 const userRoutes = require('./routes/auth');
@@ -25,11 +26,7 @@ mongoose.connect(
     console.log("Database Connected");
 })
 
-app.use(
-    cors({
-        "origin": "*"
-    })
-)
+app.use(cors({"origin": "*"}))
 
 
 app.use(express.json());
