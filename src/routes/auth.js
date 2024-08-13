@@ -61,6 +61,12 @@ router.post('/signup', validateSignupRequest, isRequestValidated, async (req,res
             to: _user.email,
             subject: "Verify your Email!",
             html: emailTemplate(OTP)
+        }, (err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Email sent successfully');
+            }
         })
 
         //Token data that we want to send to the user (here id of the user)
@@ -173,7 +179,6 @@ router.post('/user/verify-email', async (req, res) => {
         if(!req.body.otp || !req.body.userId) return res.status(400).json({message: "Please Enter valid Credentials"});
         else
         {
-            // req.body.user = req.body.userId;
             const user = await User.findById(req.body.userId);
             if(!user) return res.status(401).json({message: "No user found!, Please try again"})
             if(user.verified) return res.status(401).json({message: "Account already verified!"})
@@ -243,7 +248,7 @@ router.post('/user/forgot-password', async (req, res) => {
 
         const token = await createRandomBytes();
 
-        const resetPassoword = new ResetPassword({ user: user._id, token })
+        const resetPassoword = await new ResetPassword({ user: user._id, token })
         await resetPassoword.save();
 
         mailTransport().sendMail({
@@ -339,7 +344,6 @@ router.post('/user/update', fetchuser, userMiddleware, upload.single('profilePic
             // if images are also there for edit in request body:
             if(req.file)
             {
-                console.log(req.file)
                 updateFields.profilePicture = req.file.filename
             }
 

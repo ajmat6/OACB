@@ -10,10 +10,20 @@ exports.generateOTP = () => {
     return otp;
 }
 
+// exports.mailTransport = () => 
+//     nodemailer.createTransport({
+//         host: 'smtp.elasticemail.com',
+//         port: 2525,
+//         auth: {
+//             user: process.env.SMTP_USERNAME,
+//             pass: process.env.SMTP_PASSWORD
+//         }
+//     })
+
 exports.mailTransport = () => 
     nodemailer.createTransport({
-        host: 'smtp.elasticemail.com',
-        port: 2525,
+        host: 'smtp.gmail.com',
+        port: 587,
         auth: {
             user: process.env.SMTP_USERNAME,
             pass: process.env.SMTP_PASSWORD
